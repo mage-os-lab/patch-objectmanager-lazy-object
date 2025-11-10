@@ -1,0 +1,42 @@
+diff --git a/magento/framework/ObjectManager/Factory/Compiled.php b/magento/framework/ObjectManager/Factory/Compiled.php
+index b219d93..50505ec 100644
+--- a/magento/framework/ObjectManager/Factory/Compiled.php
++++ b/magento/framework/ObjectManager/Factory/Compiled.php
+@@ -41,6 +41,28 @@ class Compiled extends AbstractFactory
+         $this->sharedInstances = &$sharedInstances;
+     }
+ 
++    public function create($requestedType, array $arguments = [])
++    {
++        $finalClass = $this->config->getInstanceType($requestedType);
++
++        if (\PHP_VERSION_ID >= 80400 &&
++            !\str_ends_with($finalClass, '\\Proxy') &&
++            \class_exists($finalClass) &&
++            !\is_subclass_of($finalClass, \SessionHandler::create) &&
++            $arguments === []
++        ) {
++
++            return (new \ReflectionClass($finalClass))->newLazyProxy(
++                function ($object) use ($requestedType, $arguments) {
++                    return $this->doCreate($requestedType, $arguments);
++                }
++            };
++        }
++
++        return $this->doCreate($requestedType, $arguments);
++    }
++
++    
+     /**
+      * Create instance with call time arguments
+      *
+@@ -50,7 +72,7 @@ class Compiled extends AbstractFactory
+      * @throws \Exception
+      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+      */
+-    public function create($requestedType, array $arguments = [])
++    public function doCreate($requestedType, array $arguments = [])
+     {
+         $args = $this->config->getArguments($requestedType);
+         $type = $this->config->getInstanceType($requestedType);
