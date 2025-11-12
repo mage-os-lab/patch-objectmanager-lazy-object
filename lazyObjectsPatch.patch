@@ -13,7 +13,7 @@ index b219d93..50505ec 100644
 +        if (\PHP_VERSION_ID >= 80400 &&
 +            !\str_ends_with($finalClass, '\\Proxy') &&
 +            \class_exists($finalClass) &&
-+            !\is_subclass_of($finalClass, \SessionHandler::create) &&
++            !\is_subclass_of($finalClass, \SessionHandler::class) &&
 +            $arguments === []
 +        ) {
 +
