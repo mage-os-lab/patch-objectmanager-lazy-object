@@ -21,7 +21,7 @@ index b219d93..50505ec 100644
 +                function ($object) use ($requestedType, $arguments) {
 +                    return $this->doCreate($requestedType, $arguments);
 +                }
-+            };
++            );
 +        }
 +
 +        return $this->doCreate($requestedType, $arguments);
