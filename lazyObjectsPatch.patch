@@ -1,22 +1,22 @@
-diff --git a/magento/framework/ObjectManager/Factory/Compiled.php b/magento/framework/ObjectManager/Factory/Compiled.php
-index b219d93..50505ec 100644
---- a/magento/framework/ObjectManager/Factory/Compiled.php
-+++ b/magento/framework/ObjectManager/Factory/Compiled.php
+diff --git a/ObjectManager/Factory/Compiled.php b/ObjectManager/Factory/Compiled.php
+index b219d93..e63604c 100644
+--- a/ObjectManager/Factory/Compiled.php
++++ b/ObjectManager/Factory/Compiled.php
 @@ -41,6 +41,28 @@ class Compiled extends AbstractFactory
          $this->sharedInstances = &$sharedInstances;
      }
- 
+
 +    public function create($requestedType, array $arguments = [])
 +    {
 +        $finalClass = $this->config->getInstanceType($requestedType);
 +
 +        if (\PHP_VERSION_ID >= 80400 &&
 +            !\str_ends_with($finalClass, '\\Proxy') &&
-+            \class_exists($finalClass) &&
-+            !\is_subclass_of($finalClass, \SessionHandler::class) &&
-+            $arguments === []
++            $finalClass !== \Magento\Framework\View\Page\Builder::class &&
++            !\is_subclass_of($finalClass, \Magento\Framework\Session\SessionManager::class) &&
++            !\is_subclass_of($finalClass, \NumberFormatter::class) &&
++            !\is_subclass_of($finalClass, \SessionHandler::class)
 +        ) {
-+
 +            return (new \ReflectionClass($finalClass))->newLazyProxy(
 +                function ($object) use ($requestedType, $arguments) {
 +                    return $this->doCreate($requestedType, $arguments);
@@ -27,7 +27,7 @@ index b219d93..50505ec 100644
 +        return $this->doCreate($requestedType, $arguments);
 +    }
 +
-+    
++
      /**
       * Create instance with call time arguments
       *
