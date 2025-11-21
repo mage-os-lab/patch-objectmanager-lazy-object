@@ -20,8 +20,8 @@ To apply this patch to your Mage-OS installation use [cweagans/composer-patches]
 
 Once you've set this up follow these steps:
 
-1. Download the patch in this repository and save it to your Mage-OS root. Eg. patches/lazyObjectsPatch.patch
-2. Configure your composer.json to install the patch on mage-os/framework:
+1. Download the patch in this repository and save it to your Mage-OS root. Eg. `patches/lazyObjectsPatch.patch`
+2. Configure your composer.json to install the patch on `mage-os/framework` or `magento-framework` (the example below uses `mage-os/framework`):
 
 ```json
   "extra": {
@@ -35,7 +35,7 @@ Once you've set this up follow these steps:
   },
 ```
 
-3. Install the patches as described in the composer patches documentation: https://docs.cweagans.net/composer-patches/usage/recommended-workflows/
+3. Install the patches as described in the composer patches documentation: https://docs.cweagans.net/composer-patches/usage/recommended-workflows/ Usually a `composer update` already does the job.
 
 ## Contributing
 
